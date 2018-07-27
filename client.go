@@ -31,6 +31,8 @@ import (
 	"log"
 	"net/http"
 	"strings"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 const (
@@ -108,6 +110,13 @@ func (c *Client) newRequest(path, method string, body interface{}) (*http.Reques
 
 	// set default headers
 	c.setDefaultHeaders(req)
+
+	if method == http.MethodPost {
+		// Add Idempotency header key when creating a resouce
+		// https://developer.gocardless.com/api-reference/#making-requests-idempotency-keys
+		u, _ := uuid.NewV4()
+		req.Header.Add("Idempotency-Key", u.String())
+	}
 
 	return req, nil
 }
