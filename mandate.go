@@ -42,18 +42,17 @@ type (
 		CustomerBankAccountID string `json:"customer_bank_account,omitempty"`
 		NewMandateID          string `json:"new_mandate,omitempty"`
 	}
+	// mandateWrapper is a utility struct used to wrap and unwrap the JSON request being passed to the remote API
+	mandateWrapper struct {
+		Mandate *Mandate `json:"mandates"`
+	}
+
+	// MandateListResponse a List response of Mandate instances
+	MandateListResponse struct {
+		Mandates []*Mandate `json:"mandates"`
+		Meta     Meta       `json:"meta,omitempty"`
+	}
 )
-
-// mandateWrapper is a utility struct used to wrap and unwrap the JSON request being passed to the remote API
-type mandateWrapper struct {
-	Mandate *Mandate `json:"mandates"`
-}
-
-// MandateListResponse a List response of Mandate instances
-type MandateListResponse struct {
-	Mandates []*Mandate `json:"mandates"`
-	Meta     Meta       `json:"meta,omitempty"`
-}
 
 func (m *Mandate) String() string {
 	bs, _ := json.Marshal(m)
@@ -72,7 +71,8 @@ func (m *Mandate) AddMetadata(key, value string) {
 	m.Metadata[key] = value
 }
 
-// CreateMandate creates a new mandate object
+// CreateMandate creates a new mandate object.
+//
 // Relative endpoint: POST /mandates
 func (c *Client) CreateMandate(mandate *Mandate) error {
 	mandateReq := &mandateWrapper{mandate}
@@ -85,7 +85,8 @@ func (c *Client) CreateMandate(mandate *Mandate) error {
 	return err
 }
 
-// GetMandates returns a cursor-paginated list of your mandates
+// GetMandates returns a cursor-paginated list of your mandates.
+//
 // Relative endpoint: GET /mandates
 func (c *Client) GetMandates() (*MandateListResponse, error) {
 	list := &MandateListResponse{}
@@ -97,7 +98,8 @@ func (c *Client) GetMandates() (*MandateListResponse, error) {
 	return list, err
 }
 
-// GetMandate retrieves the details of an existing mandate
+// GetMandate retrieves the details of an existing mandate.
+//
 // Relative endpoint: GET /mandates/MD123
 func (c *Client) GetMandate(id string) (*Mandate, error) {
 	wrapper := &mandateWrapper{}
@@ -109,7 +111,8 @@ func (c *Client) GetMandate(id string) (*Mandate, error) {
 	return wrapper.Mandate, err
 }
 
-// UpdateMandate Updates a mandate object. Supports all of the fields supported when creating a mandate
+// UpdateMandate Updates a mandate object. Supports all of the fields supported when creating a mandate.
+//
 // Relative endpoint: PUT /mandates/MD123
 func (c *Client) UpdateMandate(mandate *Mandate) error {
 	// remove unpermitted keys before update
@@ -128,7 +131,8 @@ func (c *Client) UpdateMandate(mandate *Mandate) error {
 	return err
 }
 
-// CancelMandate immediately cancels a mandate and all associated cancellable payments
+// CancelMandate immediately cancels a mandate and all associated cancellable payments.
+//
 // Relative endpoint: POST /mandates/MD123/actions/cancel
 func (c *Client) CancelMandate(id string) (*Mandate, error) {
 	wrapper := &mandateWrapper{}
@@ -139,7 +143,8 @@ func (c *Client) CancelMandate(id string) (*Mandate, error) {
 	return wrapper.Mandate, err
 }
 
-// ReinstateMandate Reinstates a cancelled or expired mandate to the banks
+// ReinstateMandate Reinstates a cancelled or expired mandate to the banks.
+//
 // Relative endpoint: POST /mandates/MD123/actions/reinstate
 func (c *Client) ReinstateMandate(id string) (*Mandate, error) {
 	wrapper := &mandateWrapper{}

@@ -4,10 +4,10 @@ package gocardless
 type Environment string
 
 const (
-	// Sandbox is the name of the environment in the GoCardless API
-	Sandbox Environment = "sandbox"
+	// SandboxEnvironment is the name of the sandbox environment in the GoCardless API
+	SandboxEnvironment Environment = "sandbox"
 
-	// Live is the name of the live environment in the GoCardless API
+	// LiveEnvironment is the name of the live environment in the GoCardless API
 	//
 	// The following restrictions exist in live.
 	//
@@ -17,5 +17,5 @@ const (
 	// of a single creditor. The following endpoints are therefore restricted:
 	//
 	// Creditors: Create
-	Live Environment = "live"
+	LiveEnvironment Environment = "live"
 )

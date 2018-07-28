@@ -10,7 +10,7 @@ const (
 )
 
 type (
-	// CustomerBankAccount Customer Bank Accounts hold the bank details of a customer
+	// CustomerBankAccount Customer Bank Accounts hold the bank details of a customer.
 	// They always belong to a customer, and may be linked to several Direct Debit mandates.
 	CustomerBankAccount struct {
 		// ID is a unique identifier, beginning with "BA".
@@ -49,18 +49,17 @@ type (
 		// CustomerBankAccountToken ID of a customer bank account token to use in place of bank account parameters.
 		CustomerBankAccountToken string `json:"customer_bank_account_token,omitempty"`
 	}
+	// customerBankAccountWrapper is a utility struct used to wrap and unwrap the JSON request being passed to the remote API
+	customerBankAccountWrapper struct {
+		CustomerBankAccount *CustomerBankAccount `json:"customer_bank_accounts"`
+	}
+
+	// CustomerBankAccountListResponse a List response of CustomerBankAccount instances
+	CustomerBankAccountListResponse struct {
+		CustomerBankAccounts []*CustomerBankAccount `json:"customer_bank_accounts"`
+		Meta                 Meta                   `json:"meta,omitempty"`
+	}
 )
-
-// customerBankAccountWrapper is a utility struct used to wrap and unwrap the JSON request being passed to the remote API
-type customerBankAccountWrapper struct {
-	CustomerBankAccount *CustomerBankAccount `json:"customer_bank_accounts"`
-}
-
-// CustomerBankAccountListResponse a List response of CustomerBankAccount instances
-type CustomerBankAccountListResponse struct {
-	CustomerBankAccounts []*CustomerBankAccount `json:"customer_bank_accounts"`
-	Meta                 Meta                   `json:"meta,omitempty"`
-}
 
 func (ca *CustomerBankAccount) String() string {
 	bs, _ := json.Marshal(ca)
@@ -83,7 +82,8 @@ func (ca *CustomerBankAccount) AddMetadata(key, value string) {
 	ca.Metadata[key] = value
 }
 
-// CreateCustomerBankAccount creates a new customer bank account object
+// CreateCustomerBankAccount creates a new customer bank account object.
+//
 // Relative endpoint: POST /customer_bank_accounts
 func (c *Client) CreateCustomerBankAccount(cba *CustomerBankAccount) error {
 	cbaReq := &customerBankAccountWrapper{cba}
@@ -96,7 +96,8 @@ func (c *Client) CreateCustomerBankAccount(cba *CustomerBankAccount) error {
 	return err
 }
 
-// GetCustomerBankAccounts returns a cursor-paginated list of your bank accounts
+// GetCustomerBankAccounts returns a cursor-paginated list of your bank accounts.
+//
 // Relative endpoint: GET /customer_bank_accounts
 func (c *Client) GetCustomerBankAccounts() (*CustomerBankAccountListResponse, error) {
 	list := &CustomerBankAccountListResponse{}
@@ -108,7 +109,8 @@ func (c *Client) GetCustomerBankAccounts() (*CustomerBankAccountListResponse, er
 	return list, err
 }
 
-// GetCustomerBankAccount Retrieves the details of an existing bank account
+// GetCustomerBankAccount Retrieves the details of an existing bank account.
+//
 // Relative endpoint: GET /customer_bank_accounts/BA123
 func (c *Client) GetCustomerBankAccount(id string) (*CustomerBankAccount, error) {
 	wrapper := &customerBankAccountWrapper{}
@@ -120,7 +122,8 @@ func (c *Client) GetCustomerBankAccount(id string) (*CustomerBankAccount, error)
 	return wrapper.CustomerBankAccount, err
 }
 
-// UpdateCustomerBankAccount Updates a customer bank account object. Only the metadata parameter is allowed
+// UpdateCustomerBankAccount Updates a customer bank account object. Only the metadata parameter is allowed.
+//
 // Relative endpoint: PUT /customer_bank_accounts/BA123
 func (c *Client) UpdateCustomerBankAccount(cba *CustomerBankAccount) error {
 	// remove unpermitted keys before update
@@ -140,6 +143,7 @@ func (c *Client) UpdateCustomerBankAccount(cba *CustomerBankAccount) error {
 
 // DisableCustomerBankAccount disables a bank account and
 // immediately cancels all associated mandates and cancellable payments
+//
 // Relative endpoint: POST /customer_bank_accounts/BA123/actions/disable
 func (c *Client) DisableCustomerBankAccount(id string) (*CustomerBankAccount, error) {
 	wrapper := &customerBankAccountWrapper{}

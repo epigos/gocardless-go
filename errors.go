@@ -14,7 +14,7 @@ type errorContainer struct {
 }
 
 // Error base exception class for GoCardless API errors.
-// API errors will result in one of this
+// API errors will result in of this
 type Error struct {
 	DocumentationURL string         `json:"documentation_url"`
 	Message          string         `json:"message"`

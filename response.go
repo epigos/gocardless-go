@@ -21,13 +21,17 @@ type Response struct {
 
 // Meta contains pagination cursor for list endpoints
 type Meta struct {
-	Cursors cursor `json:"cursors"`
-	Limit   int    `json:"limit"`
+	Cursors Cursor `json:"cursors"`
+	// Limit Upper bound for the number of objects to be returned. Defaults to 50. Maximum of 500
+	Limit int `json:"limit"`
 }
 
-type cursor struct {
+// Cursor pagination parameters
+type Cursor struct {
+	// Before ID of the object immediately following the array of objects to be returned
 	Before string `json:"before"`
-	After  string `json:"after"`
+	// After ID of the object immediately preceding the array of objects to be returned
+	After string `json:"after"`
 }
 
 // newResponse creates a new response
@@ -64,6 +68,7 @@ func (resp *Response) RateReset() time.Time {
 	return value
 }
 
+// bind decodes response and binds it to struct
 func (resp *Response) bind(dst interface{}) error {
 
 	defer resp.Body.Close()

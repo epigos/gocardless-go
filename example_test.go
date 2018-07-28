@@ -8,7 +8,7 @@ import (
 func ExampleCustomer() {
 	// Create a Client instance, providing your access token and the environment you want to use
 	token := os.Getenv("GOCARDLESS_ACCESS_TOKEN")
-	client := NewClient(token, Sandbox)
+	client := NewClient(token, SandboxEnvironment)
 
 	// create customer
 	cm := NewCustomer("user@example.com", "Frank", "Osborne", "27 Acer Road", "Apt 2", "London", "E8 3GX", "GB")

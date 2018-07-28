@@ -34,7 +34,7 @@ import (
 
 func main() {
     token := os.Getenv("GOCARDLESS_ACCESS_TOKEN")
-    client := gocardless.NewClient(token, gocardless.Sandbox)
+    client := gocardless.NewClient(token, gocardless.SandboxEnvironment)
     
     // get customers
     res, err := client.GetCustomers()
@@ -46,4 +46,4 @@ func main() {
 ## Documentation
 
 - For full usage and examples see the [Godoc](http://godoc.org/github.com/epigos/gocardless-go)
-- [API reference](https://developer.gocardless.com/api-reference/#overview-getting-started)
+- [Gocardless Pro API reference](https://developer.gocardless.com/api-reference/#overview-getting-started)

@@ -35,12 +35,12 @@ func NewClient(accessToken string, env Environment) *Client {
 	}
 
 	switch env {
-	case Sandbox:
+	case SandboxEnvironment:
 		c.RemoteURL = baseSandboxURL
-	case Live:
+	case LiveEnvironment:
 		c.RemoteURL = baseLiveURL
 	default:
-		log.Fatalf("Invalid environment %s, use one of (%s, %s)", env, Sandbox, Live)
+		log.Fatalf("Invalid environment %s, use one of (%s, %s)", env, SandboxEnvironment, LiveEnvironment)
 	}
 	return c
 }
