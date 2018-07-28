@@ -1,0 +1,14 @@
+language: go
+go:
+ - 1.5
+ - 1.6
+ - 1.7
+ - 1.8
+ - 1.9
+ - 1.10
+install:
+ - export PATH=$PATH:$HOME/gopath/bin
+ - go get -v
+script:
+ - go vet -v `go list ./... | grep gocardless-go`
+ - go test -v `go list ./... | grep gocardless-go`
