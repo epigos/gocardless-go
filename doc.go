@@ -8,23 +8,22 @@ Create a Client instance, providing your access token and the environment you wa
 	package main
 
   import (
-    "fmt"
+		"fmt"
 		"os"
     gocardless "github.com/epigos/gocardless-go"
 	)
 
   func main() {
-		token := os.Getenv("GOCARDLESS_ACCESS_TOKEN")
-		client := gocardless.NewClient(token, gocardless.Sandbox)
-
-		res, err := client.GetCustomers()
-
-		if err != nil {
+		// gocardless client
+    token := os.Getenv("GOCARDLESS_ACCESS_TOKEN")
+    client := gocardless.NewClient(token, gocardless.Sandbox)
+    // get customers
+    res, err := client.GetCustomers()
+    if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Println(res)
+    fmt.Println(res)
   }
-
 Learn more about GoCardless Pro API https://developer.gocardless.com/
 */
 package gocardless
