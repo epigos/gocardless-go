@@ -13,7 +13,7 @@ type (
 	// CustomerBankAccount Customer Bank Accounts hold the bank details of a customer
 	// They always belong to a customer, and may be linked to several Direct Debit mandates.
 	CustomerBankAccount struct {
-		// ID is a unique identifier, beginning with “CU”.
+		// ID is a unique identifier, beginning with "BA".
 		ID string `json:"id,omitempty"`
 		// AccountHolderName Name of the account holder, as known by the bank.
 		// Usually this matches the name of the linked customer.
@@ -39,11 +39,11 @@ type (
 		// characters and values up to 500 characters.
 		Metadata map[string]string `json:"metadata,omitempty"`
 		// Links links constains customers id
-		Links links `json:"links"`
+		Links customerLinks `json:"links"`
 		// Enabled indicates if bank account is disabled
 		Enabled bool `json:"enabled,omitempty"`
 	}
-	links struct {
+	customerLinks struct {
 		// CustomerID ID of customer who owns the bank account
 		CustomerID string `json:"customer"`
 		// CustomerBankAccountToken ID of a customer bank account token to use in place of bank account parameters.
@@ -74,7 +74,7 @@ func NewCustomerBankAccount(accountNumber, accountName, branchCode, countryCode,
 		BranchCode:        branchCode,
 		AccountHolderName: accountName,
 		CountryCode:       countryCode,
-		Links:             links{CustomerID: customerID},
+		Links:             customerLinks{CustomerID: customerID},
 	}
 }
 
@@ -141,11 +141,11 @@ func (c *Client) UpdateCustomerBankAccount(cba *CustomerBankAccount) error {
 // DisableCustomerBankAccount disables a bank account and
 // immediately cancels all associated mandates and cancellable payments
 // Relative endpoint: POST /customer_bank_accounts/BA123/actions/disable
-func (c *Client) DisableCustomerBankAccount(id string) error {
-
-	err := c.post(fmt.Sprintf(`%s/%s/actions/disable`, bankAccountEndpoint, id), nil, nil)
+func (c *Client) DisableCustomerBankAccount(id string) (*CustomerBankAccount, error) {
+	wrapper := &customerBankAccountWrapper{}
+	err := c.post(fmt.Sprintf(`%s/%s/actions/disable`, bankAccountEndpoint, id), nil, wrapper)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return err
+	return wrapper.CustomerBankAccount, err
 }
