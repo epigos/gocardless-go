@@ -21,7 +21,7 @@ type (
 		// characters and values up to 500 characters.
 		Metadata map[string]string `json:"metadata,omitempty"`
 		// NextPossibleChargeDate The earliest date a newly created payment for this mandate could be charged
-		NextPossibleChargeDate *time.Time `json:"next_possible_charge_date,omitempty"`
+		NextPossibleChargeDate *Date `json:"next_possible_charge_date,omitempty"`
 		// PaymentRequireApproval Boolean value showing whether payments and
 		// subscriptions under this mandate require approval via an automated email before being processed
 		PaymentRequireApproval bool `json:"payments_require_approval,omitempty"`
@@ -33,7 +33,7 @@ type (
 		Scheme string `json:"scheme,omitempty"`
 		// Status status of mandate.
 		Status string `json:"status,omitempty"`
-		// Links links to cusomer and bacnk accounts
+		// Links links to cusomer and bank accounts
 		Links mandateLinks `json:"links"`
 	}
 	mandateLinks struct {
@@ -115,8 +115,8 @@ func (c *Client) GetMandate(id string) (*Mandate, error) {
 //
 // Relative endpoint: PUT /mandates/MD123
 func (c *Client) UpdateMandate(mandate *Mandate) error {
-	// remove unpermitted keys before update
-	cbaMeta := map[string]interface{}{
+	// allows only metadata
+	mdMeta := map[string]interface{}{
 		"mandates": map[string]interface{}{
 			"metadata": mandate.Metadata,
 		},
@@ -124,7 +124,7 @@ func (c *Client) UpdateMandate(mandate *Mandate) error {
 
 	mandateReq := &mandateWrapper{mandate}
 
-	err := c.put(fmt.Sprintf(`%s/%s`, mandateEndpoint, mandate.ID), cbaMeta, mandateReq)
+	err := c.put(fmt.Sprintf(`%s/%s`, mandateEndpoint, mandate.ID), mdMeta, mandateReq)
 	if err != nil {
 		return err
 	}
