@@ -40,6 +40,8 @@ type (
 		Metadata map[string]string `json:"metadata,omitempty"`
 		// Links links constains customers id
 		Links links `json:"links"`
+		// Enabled indicates if bank account is disabled
+		Enabled bool `json:"enabled,omitempty"`
 	}
 	links struct {
 		// CustomerID ID of customer who owns the bank account
@@ -130,6 +132,18 @@ func (c *Client) UpdateCustomerBankAccount(id string, cba *CustomerBankAccount) 
 	cbaRes := &customerBankAccountWrapper{cba}
 
 	err := c.put(fmt.Sprintf(`%s/%s`, bankAccountEndpoint, id), cbaMeta, cbaRes)
+	if err != nil {
+		return err
+	}
+	return err
+}
+
+// DisableCustomerBankAccount disables a bank account and
+// immediately cancels all associated mandates and cancellable payments
+// Relative endpoint: POST /customer_bank_accounts/BA123/actions/disable
+func (c *Client) DisableCustomerBankAccount(id string) error {
+
+	err := c.post(fmt.Sprintf(`%s/%s/actions/disable`, bankAccountEndpoint, id), nil, nil)
 	if err != nil {
 		return err
 	}

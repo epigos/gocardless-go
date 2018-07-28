@@ -1,25 +1,3 @@
-/*
-Package gocardless-go is a Go client for interacting with the GoCardless Pro API.
-
-Example:
-
-Create a Client instance, providing your access token and the environment you want to use:
-
-  package main
-  import (
-    "fmt"
-	"os"
-    gocardless "github.com/epigos/gocardless-go"
-  )
-  func main() {
-	token := os.Getenv("GOCARDLESS_ACCESS_TOKEN")
-	client := gocardless.NewClient(token, gocardless.Sandbox)
-	fmt.Println(client)
-  }
-
-Learn more about GoCardless Pro API https://developer.gocardless.com/
-*/
-
 package gocardless
 
 import (
