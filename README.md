@@ -2,6 +2,7 @@
 
 [![Godoc](http://godoc.org/github.com/epigos/gocardless-go?status.svg)](http://godoc.org/github.com/epigos/gocardless-go)
 [![Build Status](https://travis-ci.org/epigos/gocardless-go.svg?branch=master)](https://travis-ci.org/epigos/gocardless-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/epigos/gocardless-go)](https://goreportcard.com/report/github.com/epigos/gocardless-go)
 
 This package allows integrating your Golang application with [Gocardless Pro](https://gocardless.com/)
 
