@@ -122,7 +122,7 @@ func (c *Client) GetCustomerBankAccount(id string) (*CustomerBankAccount, error)
 
 // UpdateCustomerBankAccount Updates a customer bank account object. Only the metadata parameter is allowed
 // Relative endpoint: PUT /customer_bank_accounts/BA123
-func (c *Client) UpdateCustomerBankAccount(id string, cba *CustomerBankAccount) error {
+func (c *Client) UpdateCustomerBankAccount(cba *CustomerBankAccount) error {
 	// remove unpermitted keys before update
 	cbaMeta := map[string]interface{}{
 		"customer_bank_accounts": map[string]interface{}{
@@ -131,7 +131,7 @@ func (c *Client) UpdateCustomerBankAccount(id string, cba *CustomerBankAccount) 
 	}
 	cbaRes := &customerBankAccountWrapper{cba}
 
-	err := c.put(fmt.Sprintf(`%s/%s`, bankAccountEndpoint, id), cbaMeta, cbaRes)
+	err := c.put(fmt.Sprintf(`%s/%s`, bankAccountEndpoint, cba.ID), cbaMeta, cbaRes)
 	if err != nil {
 		return err
 	}

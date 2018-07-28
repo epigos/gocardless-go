@@ -126,7 +126,8 @@ func (c *Client) GetCustomer(id string) (*Customer, error) {
 
 // UpdateCustomer Updates a customer object. Supports all of the fields supported when creating a customer
 // Relative endpoint: PUT /customers/CU123
-func (c *Client) UpdateCustomer(id string, customer *Customer) error {
+func (c *Client) UpdateCustomer(customer *Customer) error {
+	id := customer.ID
 	// remove unpermitted keys before update
 	customer.ID = ""
 	customer.CreatedAt = nil
